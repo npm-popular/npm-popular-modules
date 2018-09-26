@@ -1,0 +1,45 @@
+{
+  "name": "npm-popular-modules",
+  "version": "0.0.1",
+  "description": "Get popular libraries in npmjs.com",
+  "license": "MIT",
+  "repository": "ZYSzys/npm-popular-modules",
+  "author": {
+    "name": "ZYSzys",
+    "email": "17367077526@163.com",
+    "url": "zyszys.top"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "test": "npm run lint && nyc ava",
+    "lint": "standard --fix"
+  },
+  "files": [
+    "index.js",
+    "cli.js"
+  ],
+  "keywords": [
+    "npm",
+    "node",
+    "node modules"
+  ],
+  "dependencies": {
+    "cheerio": "1.0.0-rc.2",
+    "got": "9.2.2",
+    "ora": "3.0.0"
+  },
+  "devDependencies": {
+    "ava": "0.25.0",
+    "codecov": "3.1.0",
+    "nyc": "12.0.2",
+    "standard": "*"
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  }
+}
