@@ -4,9 +4,6 @@
   "description": "Get popular libraries in npmjs.com",
   "license": "MIT",
   "repository": "ZYSzys/npm-popular-modules",
-  "bin": {
-    "npm-popular-modules": "./cli.js"
-  },
   "author": {
     "name": "ZYSzys",
     "email": "17367077526@163.com",
