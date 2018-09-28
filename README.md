@@ -12,21 +12,42 @@
 
 ## Install
 
+### CLI
 ```sh
-$ git clone https://github.com/ZYSzys/npm-popular-modules.git
+$ npm install -g npm-popular-modules
+```
 
-$ cd npm-popular
-# install deps
-$ npm install
+### As module
+```sh
+$ npm install npm-popular-modules
 ```
 
 
 ## Usage
 
+### CLI
 ```sh
-$ ./cli.js
-# generate a file name Popular
+$ npm-popular-modules
+# => Write into Popular successfully.
 ```
+
+### As module
+```js
+const npmPopular = require('npm-popular-modules')
+
+(async () => {
+  const list = await npmPopular()
+  console.log(list)
+})()
+// => [ { name: 'browserify', url: 'npmjs.com/package/browserify' },
+//      ...]
+```
+
+
+
+
+
+
 
 ## License
 
