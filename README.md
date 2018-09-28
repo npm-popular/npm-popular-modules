@@ -12,12 +12,6 @@
 
 ## Install
 
-### CLI
-```sh
-$ npm install -g npm-popular-modules
-```
-
-### As module
 ```sh
 $ npm install npm-popular-modules
 ```
@@ -25,13 +19,6 @@ $ npm install npm-popular-modules
 
 ## Usage
 
-### CLI
-```sh
-$ npm-popular-modules
-# => Write into Popular successfully.
-```
-
-### As module
 ```js
 const npmPopular = require('npm-popular-modules')
 
@@ -43,11 +30,9 @@ const npmPopular = require('npm-popular-modules')
 //      ...]
 ```
 
+## Related
 
-
-
-
-
+- [npm-popular-modules-cli](https://github.com/ZYSzys/npm-popular-modules-cli)
 
 ## License
 
