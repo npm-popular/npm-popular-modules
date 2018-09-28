@@ -1,6 +1,6 @@
 {
   "name": "npm-popular-modules",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Get popular libraries in npmjs.com",
   "license": "MIT",
   "repository": "ZYSzys/npm-popular-modules",
