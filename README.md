@@ -26,13 +26,17 @@ const npmPopular = require('npm-popular-modules')
   const list = await npmPopular()
   console.log(list)
 })()
-// => [ { name: 'browserify', url: 'npmjs.com/package/browserify' },
-//      ...]
+//[ { name: 'browserify',
+//    url: 'npmjs.com/package/browserify',
+//    homepage: 'https://github.com/browserify/browserify#readme',
+//    github: 'https://github.com/browserify/browserify' },
+//. ... ]
 ```
 
 ## Related
 
-- [npm-popular-modules-cli](https://github.com/ZYSzys/npm-popular-modules-cli)
+- [npm-popular](https://github.com/ZYSzys/npm-popular) A website for getting popular node modules.
+- [npm-popular-modules-cli](https://github.com/ZYSzys/npm-popular-modules-cli) CLI for the module.
 
 ## License
 
