@@ -17,6 +17,7 @@
     "lint": "prettier --single-quote --write *.js src/*.js"
   },
   "files": [
+    "src",
     "index.js"
   ],
   "keywords": [
