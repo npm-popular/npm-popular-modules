@@ -1,0 +1,210 @@
+'use strict';
+
+const got = require('got');
+const cheerio = require('cheerio');
+
+const parseNpm = require('./npm');
+const parsePackage = require('./package');
+
+/**
+ * Extract popular packages list
+ */
+const npmPopular = async () => {
+  try {
+    const homeList = await parseNpm('npmjs.com');
+    for (const pkg of homeList) {
+      try {
+        const urls = await parsePackage(pkg.url);
+        Object.assign(pkg, urls);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    return homeList;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+module.exports = npmPopular;
+'use strict';
+
+const got = require('got');
+const cheerio = require('cheerio');
+
+/**
+ * Parse npmjs.com to extract popular packages list
+ *
+ * @param {String} url
+ */
+const parseNpm = async url => {
+  try {
+    const res = await got(url);
+    const $ = cheerio.load(res.body);
+    const libArray = $('.marginalia-container').find('h3');
+
+    const list = [];
+    libArray.each((index, el) => {
+      const item = $(el).find('a');
+      const name = item.text();
+      const url = `npmjs.com${item.attr('href')}`;
+
+      list.push({ name, url });
+    });
+
+    return list;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+module.exports = parseNpm;
+'use strict';
+
+const got = require('got');
+const cheerio = require('cheerio');
+
+/**
+ * Parse npmjs.com/{package urll} to extract urls for each package
+ *
+ * @param {String} url
+ *
+ * return {homepage: ..., github: ...}
+ */
+const parsePackage = async url => {
+  try {
+    const res = await got(url);
+    const $ = cheerio.load(res.body);
+    const urls = $('.package__rightSidebar___9dMXo').find(
+      '.package__sidebarLink___zE7yA'
+    );
+
+    const list = [];
+    urls.each((index, url) => {
+      list.push(url.attribs.href);
+    });
+
+    return Object.assign(
+      {},
+      {
+        homepage: list[0],
+        github: list[1]
+      }
+    );
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+module.exports = parsePackage;
+MIT License
+
+Copyright (c) ZYSzys <17367077526@163.com> (zyszys.top)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# npm-popular-modules
+
+[![Build Status](https://travis-ci.org/ZYSzys/npm-popular-modules.svg?branch=master)](https://travis-ci.org/ZYSzys/npm-popular-modules)
+[![codecov](https://codecov.io/gh/ZYSzys/npm-popular-modules/badge.svg?branch=master)](https://codecov.io/gh/ZYSzys/npm-popular-modules?branch=master)
+[![NPM version](https://img.shields.io/npm/v/npm-popular-modules.svg?style=flat)](https://npmjs.com/package/npm-popular-modules)
+[![NPM downloads](https://img.shields.io/npm/dm/npm-popular-modules.svg?style=flat)](https://npmjs.com/package/npm-popular-modules)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
+[![license](https://img.shields.io/github/license/ZYSzys/npm-popular-modules.svg)](https://github.com/ZYSzys/npm-popular-modules/blob/master/LICENSE)
+
+> Get popular libraries from npmjs.com
+
+
+## Install
+
+```sh
+$ npm install npm-popular-modules
+```
+
+
+## Usage
+
+```js
+const npmPopular = require('npm-popular-modules')
+
+(async () => {
+  const list = await npmPopular()
+  console.log(list)
+})()
+//[ { name: 'browserify',
+//    url: 'npmjs.com/package/browserify',
+//    homepage: 'https://github.com/browserify/browserify#readme',
+//    github: 'https://github.com/browserify/browserify' },
+//. ... ]
+```
+
+## Related
+
+- [npm-popular](https://github.com/ZYSzys/npm-popular) A website for getting popular node modules.
+- [npm-popular-modules-cli](https://github.com/ZYSzys/npm-popular-modules-cli) CLI for the module.
+
+## License
+
+MIT © [ZYSzys](http://zyszys.top)
+'use strict';
+
+module.exports = require('./src');
+{
+  "name": "npm-popular-modules",
+  "version": "0.1.3",
+  "description": "Get popular libraries in npmjs.com",
+  "license": "MIT",
+  "repository": "ZYSzys/npm-popular-modules",
+  "author": {
+    "name": "ZYSzys",
+    "email": "17367077526@163.com",
+    "url": "zyszys.top"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "test": "npm run lint && nyc ava -v",
+    "lint": "prettier --single-quote --write *.js src/*.js"
+  },
+  "files": [
+    "src",
+    "index.js"
+  ],
+  "keywords": [
+    "npm",
+    "node",
+    "node modules"
+  ],
+  "dependencies": {
+    "cheerio": "1.0.0-rc.2",
+    "got": "9.2.2"
+  },
+  "devDependencies": {
+    "ava": "0.25.0",
+    "codecov": "3.1.0",
+    "nyc": "12.0.2",
+    "prettier": "1.14.3"
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  }
+}
+{
+  "extends": [
+    "config:base"
+  ]
+}
+import test from 'ava';
+import npmPopular from '.';
+
+test('get npm list', async t => {
+  const res = await npmPopular();
+  t.is(Array.isArray(res), true);
+});
